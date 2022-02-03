@@ -15,4 +15,8 @@ class MovieLocalDataSourceImpl(
     override fun getSavedMovies(): Flow<List<Movie>> {
         return movieDAO.getAllMovies()
     }
+
+    override suspend fun deleteMoviesFromDB(movie: Movie) {
+        movieDAO.deleteMovie(movie)
+    }
 }

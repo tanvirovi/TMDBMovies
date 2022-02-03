@@ -13,10 +13,7 @@ import androidx.lifecycle.viewModelScope
 import com.greeny.tmdbmovies.data.model.Movie
 import com.greeny.tmdbmovies.data.model.MovieList
 import com.greeny.tmdbmovies.data.util.Resource
-import com.greeny.tmdbmovies.domain.usecase.GetMoviesUseCase
-import com.greeny.tmdbmovies.domain.usecase.GetSavedMoviesUseCase
-import com.greeny.tmdbmovies.domain.usecase.GetSearchedMoviesUseCase
-import com.greeny.tmdbmovies.domain.usecase.SaveMoviesUseCase
+import com.greeny.tmdbmovies.domain.usecase.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -27,7 +24,8 @@ class MovieViewModel(
     private val getMoviesUseCase: GetMoviesUseCase,
     private val getSearchedMoviesUseCase: GetSearchedMoviesUseCase,
     private val saveMoviesUseCase: SaveMoviesUseCase,
-    private val getSavedMoviesUseCase: GetSavedMoviesUseCase
+    private val getSavedMoviesUseCase: GetSavedMoviesUseCase,
+    private val deleteSavedMovieUseCase: DeleteSavedMovieUseCase
 ): AndroidViewModel(app){
     val popularMovies : MutableLiveData<Resource<MovieList>> = MutableLiveData()
 
@@ -108,4 +106,9 @@ class MovieViewModel(
             emit(it)
         }
     }
+
+    fun deleteMovie(movie: Movie) = viewModelScope.launch {
+        deleteSavedMovieUseCase.execute(movie)
+    }
+
 }

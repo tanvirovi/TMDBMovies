@@ -7,4 +7,5 @@ interface MovieLocalDataSource {
     suspend fun saveMovieToDB(movie: Movie)
 
     fun getSavedMovies():Flow<List<Movie>>
+    suspend fun deleteMoviesFromDB(movie: Movie)
 }

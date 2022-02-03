@@ -10,6 +10,7 @@ interface MovieRepository {
     suspend fun getMovies(page : Int): Resource<MovieList>
     suspend fun getSearchedMovie(searchQuery : String): Resource<MovieList>
     suspend fun saveMovie(movie: Movie)
+    suspend fun deleteMovie(movie: Movie)
     fun getSavedMovies():Flow<List<Movie>>
 
 }

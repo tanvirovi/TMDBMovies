@@ -6,7 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.greeny.tmdbmovies.databinding.FragmentSavedBinding
 import com.greeny.tmdbmovies.presentation.MovieAdapter
 import com.greeny.tmdbmovies.presentation.MovieViewModel
@@ -47,6 +50,36 @@ class SavedFragment : Fragment() {
             movieAdapter.differ.submitList(it)
         }
 
+        val itemTouchHelperCallBack = object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val movie = movieAdapter.differ.currentList[position]
+                viewModel.deleteMovie(movie)
+                Snackbar.make(view,"deleted Successfully", Snackbar.LENGTH_LONG)
+                    .apply {
+                        setAction("Undo"){
+                            viewModel.saveMovies(movie)
+                        }
+                        show()
+                    }
+            }
+
+        }
+
+        ItemTouchHelper(itemTouchHelperCallBack).apply {
+            attachToRecyclerView(fragmentSavedBinding.rcvSavedMovie)
+        }
     }
 
     private fun initRecyclerView(){

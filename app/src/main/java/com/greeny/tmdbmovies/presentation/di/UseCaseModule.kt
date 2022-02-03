@@ -2,10 +2,7 @@ package com.greeny.tmdbmovies.presentation.di
 
 
 import com.greeny.tmdbmovies.domain.repository.MovieRepository
-import com.greeny.tmdbmovies.domain.usecase.GetMoviesUseCase
-import com.greeny.tmdbmovies.domain.usecase.GetSavedMoviesUseCase
-import com.greeny.tmdbmovies.domain.usecase.GetSearchedMoviesUseCase
-import com.greeny.tmdbmovies.domain.usecase.SaveMoviesUseCase
+import com.greeny.tmdbmovies.domain.usecase.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,5 +33,11 @@ class UseCaseModule {
     @Singleton
     fun provideGetSaveMovieUseCase(movieRepository: MovieRepository): GetSavedMoviesUseCase {
         return GetSavedMoviesUseCase(movieRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeleteSavedMovieUseCase(movieRepository: MovieRepository): DeleteSavedMovieUseCase {
+        return DeleteSavedMovieUseCase(movieRepository)
     }
 }
